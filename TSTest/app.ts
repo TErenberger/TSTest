@@ -1,28 +1,132 @@
-﻿class Greeter {
-    element: HTMLElement;
-    span: HTMLElement;
-    timerToken: number;
+﻿class ViewModel {
+    title: string;
 
-    constructor(element: HTMLElement) {
-        this.element = element;
-        this.element.innerHTML += "The time is: ";
-        this.span = document.createElement('span');
-        this.element.appendChild(this.span);
-        this.span.innerText = new Date().toUTCString();
+    constructor(title: string) {
+        this.title = title;
+    }
+}
+
+class Good {
+    name: string;
+    cost: number;
+    quantity: number;
+    managers: Array<Person>;
+
+    constructor(name: string, managers: Array<Person>) {
+        this.name = name;
+        this.managers = managers;
     }
 
-    start() {
-        this.timerToken = setInterval(() => this.span.innerHTML = new Date().toUTCString(), 500);
+    adjustCost(cost: number, authority: Person) {
+        if (this.managers.indexOf(authority) >= 0) {
+            this.cost = cost;
+        }
     }
 
-    stop() {
-        clearTimeout(this.timerToken);
+    buy(wallet: Wallet) {
+        if (this.quantity == 0) {
+            return false;
+        }
+
+        wallet.charge(this.cost);
+        this.quantity--;
+        wallet.owner.addItem(this);
+
     }
 
 }
 
+class Wallet {
+    owner: Person;
+    private worth: number;
+    private debt: number;
+
+    constructor(owner: Person) {
+        this.owner = owner;
+        this.worth = 0;
+        this.debt = 0;
+    }
+
+    balance() : number {
+        this.worth -= this.debt;
+        if (this.worth < 0) {
+            this.debt -= this.worth;
+            this.worth = 0;
+        }
+
+        return this.worth;
+    }
+
+    charge(cost: number) : void {
+        this.debt += cost;
+    }
+
+}
+
+class Person {
+    name: string;
+    phone: string;
+    items: Array<Good>;
+
+    constructor(name: string, phone: string) {
+        this.name = name;
+        this.phone = phone;
+        this.items = new Array<Good>();
+    }
+
+    addItem(item: Good) : void {
+        this.items.push(item);
+    }
+
+}
+
+class Bank {
+    accounts: Array<Wallet>;
+    clients: Array<Person>;
+}
+
+class Store extends Person {
+    items: Array<Good>;
+    ledger: Wallet;
+
+    constructor(name: string, phone: string) {
+        super(name, phone);
+        this.items = new Array<Good>();
+        this.ledger = new Wallet(this);
+    }
+
+}
+
+class Economy {
+    centralBank: Bank;
+    entities: Array<Person>;
+
+    constructor() {
+        this.centralBank = new Bank();
+        this.entities = new Array<Person>();
+    }
+
+    addEntity(entity: Person): void {
+        this.entities.push(entity);
+        this.centralBank.clients.push(entity);
+        this.centralBank.accounts[entity.name] = new Wallet(entity);
+    }
+}
+
+
 window.onload = () => {
-    var el = document.getElementById('content');
-    var greeter = new Greeter(el);
-    greeter.start();
+    var vm = new ViewModel('test vm');
+
+    var economy = new Economy();
+
+    var testConsumer = new Person('Dave', '555-555-5555');
+    var store = new Store('Ace', '515-234-5124');
+    var testItem = new Good('Hammer', [testConsumer]);
+    economy.addEntity(testConsumer);
+    economy.addEntity(store);
+
+    
+
+
+    ko.applyBindings(vm);
 };
