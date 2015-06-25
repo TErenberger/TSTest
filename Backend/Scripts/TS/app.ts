@@ -1,4 +1,6 @@
-﻿class ViewModel {
+﻿/// <reference path="../typings/knockout/knockout.d.ts" />
+
+class ViewModel {
     title: string;
 
     constructor(title: string) {
@@ -47,7 +49,7 @@ class Wallet {
         this.debt = 0;
     }
 
-    balance() : number {
+    balance(): number {
         this.worth -= this.debt;
         if (this.worth < 0) {
             this.debt -= this.worth;
@@ -57,7 +59,7 @@ class Wallet {
         return this.worth;
     }
 
-    charge(cost: number) : void {
+    charge(cost: number): void {
         this.debt += cost;
     }
 
@@ -74,7 +76,7 @@ class Person {
         this.items = new Array<Good>();
     }
 
-    addItem(item: Good) : void {
+    addItem(item: Good): void {
         this.items.push(item);
     }
 
@@ -83,6 +85,12 @@ class Person {
 class Bank {
     accounts: Array<Wallet>;
     clients: Array<Person>;
+
+    constructor() {
+        this.clients = new Array<Person>();
+        this.accounts = new Array<Wallet>();
+    }
+
 }
 
 class Store extends Person {
@@ -125,7 +133,7 @@ window.onload = () => {
     economy.addEntity(testConsumer);
     economy.addEntity(store);
 
-    
+
 
 
     ko.applyBindings(vm);

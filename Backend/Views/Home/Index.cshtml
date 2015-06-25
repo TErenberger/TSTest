@@ -1,0 +1,29 @@
+﻿@{ 
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="row">
+
+    <h1 data-bind="text: title"></h1>
+
+    <!-- ko foreach: {data: sections, as: 'section'} -->
+        <!-- ko foreach: {data: section.elements, as: 'element'} -->
+            <div class="row">
+                <div class="input-group">
+                    <label class="input-group-addon" data-bind="text: element.label"></label>
+                    <input class="form-control" data-bind="value: element.value" />
+                </div>
+
+            </div>
+        <!-- /ko -->
+    <!-- /ko -->
+    
+
+</div>
+
+
+@section scripts {
+    <script src="~/Scripts/TS/Structure.js"></script>
+
+}
