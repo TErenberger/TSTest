@@ -9,7 +9,7 @@
         }
 
         addSection(section: Section): void {
-            this.sections()[section.name] = section;
+            this.sections.push(section);
         }
 
     }
@@ -33,13 +33,31 @@
     export class Element {
         label: KnockoutObservable<string>;
         value: KnockoutObservable<number>;
+        layout: Layout;
         id: number;
         private static nextID = 0;
 
-        constructor(label: string, defaultValue: number) {
+        constructor(label: string, defaultValue: number, width: number, type: string) {
             this.label = ko.observable<string>(label);
             this.value = ko.observable<number>(defaultValue);
             this.id = ++Element.nextID;
+            this.layout = new Structure.Layout(width, type);
+        }
+
+    }
+
+    export class Layout {
+        column: number;
+        type: string;
+
+        constructor(width: number, type: string) {
+            this.column = width;
+            this.type = type;
+        }
+
+        getClass() : string {
+            return 'col-sm-' + this.column;
+
         }
 
     }
@@ -49,8 +67,11 @@
 
 window.onload = () => {
     var app = new Structure.Application('one');
-    app.addSection(new Structure.Section('section one').addElement(new Structure.Element('element one', 1)));
-    app.sections()['section one'].addElement(new Structure.Element('element one', 1));
+    var sectionOne = new Structure.Section('section one');
+    sectionOne.addElement(new Structure.Element('element one', 1, 12, 'std'));
+    sectionOne.addElement(new Structure.Element('element two', 2, 6, 'std'));
+    app.addSection(sectionOne);
+    
 
     
     ko.applyBindings(app);

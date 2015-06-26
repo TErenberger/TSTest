@@ -10,11 +10,9 @@
     <!-- ko foreach: {data: sections, as: 'section'} -->
         <!-- ko foreach: {data: section.elements, as: 'element'} -->
             <div class="row">
-                <div class="input-group">
-                    <label class="input-group-addon" data-bind="text: element.label"></label>
+                <div data-bind="css: element.layout.getClass()">
                     <input class="form-control" data-bind="value: element.value" />
                 </div>
-
             </div>
         <!-- /ko -->
     <!-- /ko -->
@@ -25,5 +23,4 @@
 
 @section scripts {
     <script src="~/Scripts/TS/Structure.js"></script>
-
 }
