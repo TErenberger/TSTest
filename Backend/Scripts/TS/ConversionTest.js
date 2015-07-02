@@ -21,16 +21,14 @@ function Element(label, unitM, unitI, defaultValue, conversions)
 var vm = new ViewModel();
 
 
-var conv = [new Conversion('poundsToKilograms', 'kilogramsToPounds')];
-var conv2 = [new Conversion('millimetersToInches', 'inchesToMillimeters')];
+var weightConv = [new Conversion('poundsToKilograms', 'kilogramsToPounds')];
+var lengthConv = [new Conversion('millimetersToInches', 'inchesToMillimeters')];
 
 
-
-vm.el = new Element('test', 'kg', 'lb', 1, conv);
-vm.el2 = new Element('test', 'mm', 'in', 1, conv2);
-
-
-vm.el2.value(23);
+vm.el = [];
+vm.el.push(new Element('weight element 1', 'kg', 'lb', 1, weightConv));
+vm.el.push(new Element('length element', 'mm', 'in', 1, lengthConv));
+vm.el.push(new Element('weight element 2', 'kg', 'lb', 2, weightConv));
 
 //var val = ko.observable(10);
 //var id = convert.registerChild(val, conv);
