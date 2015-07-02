@@ -45,7 +45,7 @@
         }
 
     }
-
+    
     export class Layout {
         column: number;
         type: string;
@@ -64,7 +64,7 @@
 
 }
 
-
+/*
 window.onload = () => {
     var app = new Structure.Application('one');
     var sectionOne = new Structure.Section('section one');
@@ -76,4 +76,5 @@ window.onload = () => {
     
     ko.applyBindings(app);
 };
+*/
 

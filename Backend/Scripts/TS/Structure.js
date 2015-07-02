@@ -46,12 +46,17 @@ var Structure;
     })();
     Structure.Layout = Layout;
 })(Structure || (Structure = {}));
-window.onload = function () {
+/*
+window.onload = () => {
     var app = new Structure.Application('one');
     var sectionOne = new Structure.Section('section one');
     sectionOne.addElement(new Structure.Element('element one', 1, 12, 'std'));
     sectionOne.addElement(new Structure.Element('element two', 2, 6, 'std'));
     app.addSection(sectionOne);
+    
+
+    
     ko.applyBindings(app);
 };
+*/
 //# sourceMappingURL=Structure.js.map

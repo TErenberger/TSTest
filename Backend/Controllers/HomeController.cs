@@ -14,5 +14,12 @@ namespace Backend.Controllers
 
             return View();
         }
+
+        public ActionResult ConversionTest()
+        {
+            ViewBag.Title = "conversion test";
+
+            return View();
+        }
     }
 }

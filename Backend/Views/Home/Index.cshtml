@@ -8,6 +8,7 @@
     <h1 data-bind="text: title"></h1>
 
     <!-- ko foreach: {data: sections, as: 'section'} -->
+        <h2 data-bind="text: section.name"></h2>
         <!-- ko foreach: {data: section.elements, as: 'element'} -->
             <div class="row">
                 <div data-bind="css: element.layout.getClass()">
@@ -22,5 +23,7 @@
 
 
 @section scripts {
+    <script src="~/Scripts/conversion.js"></script>
     <script src="~/Scripts/TS/Structure.js"></script>
+    <script src="~/Scripts/TS/Index_App.js"></script>
 }
