@@ -240,13 +240,21 @@ function createConverter()
             this.getValueComputed = function (el) {
                 return ko.pureComputed({
                     read: function () {
-                        return convert.registry.getChild(this.id, convert)
+                        return convert.registry.getChild(this.id, convert);
                     },
                     write: function (value) {
                         convert.registry.updateChild(this.id, value);
                     }
                 }, el);
             }
+
+
+            this.getPureValueComputed = function (el) {
+                return ko.pureComputed(function () {
+                    return convert.registry.getChildPure(this.id, convert)
+                }, el);
+            }
+
             return this;
         };
 
@@ -258,12 +266,28 @@ function createConverter()
                 return this.children.push({ 'value': value, 'conversions': conversions }) - 1;
             };
             this.getChild = function (id, convert) {
-                return Math.round(this.children[id].value() * Math.pow(10, convert.rounding)) / Math.pow(10, convert.rounding);
+                return convert.round(this.children[id].value());
             };
 
             this.updateChild = function (id, value) {
                 this.children[id].value(value);
             };
+
+            this.getChildPure = function (id, convert) {
+
+                if (convert.system() === 'imperial') {
+                    var mVal = this.children[id].value();
+                    for (var convIndex in this.children[id].conversions) {
+                        var conv = this.children[id].conversions[convIndex];
+                        mVal = convert.functions[conv.toMet](mVal);
+                    }
+                    return mVal;
+                } else {
+                    return this.children[id].value();
+                }
+
+                return convert.system() === 'metric' ? this.children[id].value() : convert.functions[this.children[id].conversions.toMet](this.children[id].value());
+            }
 
             this.convertChildren = function (parent) {
                 for (var childIndex in this.children) {
@@ -272,13 +296,24 @@ function createConverter()
                         var conv = child.conversions[numIndex];
                         if (parent.system() === 'metric') {
                             child.value(parent.functions[conv.toMet](child.value()));
-                        }
-                        else {
+                        } else {
                             child.value(parent.functions[conv.toImp](child.value()));
                         }
                     }
                 }
             };
+
+            this.convertChild = function (val, conversions, parent) {
+                for (var numIndex in conversions) {
+                    var conv = conversions[numIndex];
+                    if (parent.system() === 'metric') {
+                        //val = parent.functions[conv.toMet](val);
+                    } else {
+                        val = parent.functions[conv.toImp](val);
+                    }
+                }
+                return val;
+            }
 
             this.notifyChildren = function () {
                 for (var childIndex in this.children) {
@@ -288,7 +323,6 @@ function createConverter()
             };
 
         };
-
 
         this.rounding = 3;
         this.system = ko.observable('metric');
@@ -302,6 +336,20 @@ function createConverter()
             this.system(this.system() === 'metric' ? 'imperial' : 'metric');
             this.registry.convertChildren(this);
         };
+
+        this.round = function (value) {
+            return Math.round(value * Math.pow(10, this.rounding)) / Math.pow(10, this.rounding);
+        }
+
+        this.computedResult = function (val, conversions) {
+            if (this.system() === 'imperial') {
+                for (var numIndex in conversions) {
+                    var conv = conversions[numIndex];
+                    val = this.functions[conv.toImp](val);
+                }
+            }
+            return val;
+        }
 
         return this;
     };
