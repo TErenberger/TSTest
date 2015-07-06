@@ -14,7 +14,7 @@
 <select data-bind="options: [0,1,2,3,4,5,6,7,8,9,10],
                    value: rounding"></select>
 
-<button data-bind="click: function() { convert.switchSystem(convert);}">convert</button>
+<button data-bind="click: function() { convert.switchSystem();}">convert</button>
 
 <!-- ko foreach: {data: comp, as: 'el'} -->
     <h1 data-bind="text: el.label"></h1>
@@ -24,7 +24,7 @@
 
 
 @section scripts {
-    <script src="~/Scripts/conversion.js"></script>
+    <script src="~/Scripts/conversion-2.0.js"></script>
     <script src="~/Scripts/TS/conversionTest.js"></script>
 }
 
