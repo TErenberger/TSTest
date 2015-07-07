@@ -237,21 +237,23 @@ function createConverter()
                 }, vm);
             };
 
-            this.getValueComputed = function (el) {
+            this.getValueComputed = function (el, id) {
+                if (id == undefined) id = 'id';
                 return ko.pureComputed({
                     read: function () {
-                        return convert.registry.getChild(this.id, convert);
+                        return convert.registry.getChild(this[id], convert);
                     },
                     write: function (value) {
-                        convert.registry.updateChild(this.id, value);
+                        convert.registry.updateChild(this[id], value);
                     }
                 }, el);
             }
 
 
-            this.getPureValueComputed = function (el) {
+            this.getPureValueComputed = function (el, id) {
+                if (id == undefined) id = 'id';
                 return ko.pureComputed(function () {
-                    return convert.registry.getChildPure(this.id, convert)
+                    return convert.registry.getChildPure(this[id], convert)
                 }, el);
             }
 
@@ -324,11 +326,11 @@ function createConverter()
 
         };
 
-        this.rounding = 3;
+        this.rounding = ko.observable(3);
         this.system = ko.observable('metric');
 
         this.updateRounding = function (figures) {
-            this.rounding = figures;
+            this.rounding(figures);
             this.registry.notifyChildren();
         }
 
@@ -338,7 +340,7 @@ function createConverter()
         };
 
         this.round = function (value) {
-            return Math.round(value * Math.pow(10, this.rounding)) / Math.pow(10, this.rounding);
+            return Math.round(value * Math.pow(10, this.rounding())) / Math.pow(10, this.rounding());
         }
 
         this.computedResult = function (val, conversions) {
@@ -348,7 +350,7 @@ function createConverter()
                     val = this.functions[conv.toImp](val);
                 }
             }
-            return val;
+            return this.round(val);
         }
 
         return this;

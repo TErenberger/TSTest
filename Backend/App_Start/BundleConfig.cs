@@ -21,6 +21,8 @@ namespace Backend
                       "~/Scripts/respond.js"));
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include("~/Scripts/knockout-{version}.js"));
 
+            //bundles.Add(new ScriptBundle("~/bundles/fpScripts").Include("~/Scripts/conversion-{version}.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));

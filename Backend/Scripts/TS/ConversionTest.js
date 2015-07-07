@@ -7,17 +7,16 @@ function ViewModel() {
 
 
 
-function ElementInput(label, unitM, unitI, observable, conversions)
-{
+function ElementInput(label, unitM, unitI, observable, conversions) {
     this.label = label;
     this.unitM = unitM;
     this.unitI = unitI;
     this.unit = ko.computed(function () {
         return convert.system() === 'metric' ? this.unitM : this.unitI;
     }, this);
-    this.id = convert.registry.registerChild(observable, conversions);
-    this.value = convert.helpers.getValueComputed(this);
-    this.pureValue = convert.helpers.getPureValueComputed(this);
+    this.conversionID = convert.registry.registerChild(observable, conversions);
+    this.value = convert.helpers.getValueComputed(this, 'conversionID');
+    this.pureValue = convert.helpers.getPureValueComputed(this, 'conversionID');
     this.conversions = conversions;
 }
 
