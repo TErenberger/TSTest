@@ -4,7 +4,8 @@ function createConverter()
     var converter = function () {
         this.self = this;
 
-        this.functions = new function () {
+        this.functions = new function (parent) {
+            this.parent = parent;
             // LEVEL 1 CONVERSIONS
             // Distance
             this.inchesToMillimeters = function (incoming) {
@@ -221,18 +222,19 @@ function createConverter()
                 return this.forceOnEarth(incomingSystem, this.distanceMAndIn(incomingSystem, incomingValue));
             };
             return this;
-        };
+        }(this);
 
         
 
-        this.helpers = new function () {
+        this.helpers = new function (parent) {
+            this.parent = parent;
             this.getRoundingComputed = function (vm) {
                 return ko.pureComputed({
                     read: function () {
-                        return convert.rounding;
+                        return parent.rounding;
                     },
                     write: function (val) {
-                        convert.updateRounding(val);
+                        parent.updateRounding(val);
                     }
                 }, vm);
             };
@@ -241,10 +243,10 @@ function createConverter()
                 if (id == undefined) id = 'id';
                 return ko.pureComputed({
                     read: function () {
-                        return convert.registry.getChild(this[id], convert);
+                        return parent.registry.getChild(this[id], convert);
                     },
                     write: function (value) {
-                        convert.registry.updateChild(this[id], value);
+                        parent.registry.updateChild(this[id], value);
                     }
                 }, el);
             }
@@ -253,45 +255,46 @@ function createConverter()
             this.getPureValueComputed = function (el, id) {
                 if (id == undefined) id = 'id';
                 return ko.pureComputed(function () {
-                    return convert.registry.getChildPure(this[id], convert)
+                    return parent.registry.getChildPure(this[id], parent)
                 }, el);
             }
 
             return this;
-        };
+        }(this);
 
         
 
-        this.registry = new function () {
+        this.registry = new function (parent) {
+            this.parent = parent;
             this.children = [];
             this.registerChild = function (value, conversions) {
                 return this.children.push({ 'value': value, 'conversions': conversions }) - 1;
             };
-            this.getChild = function (id, convert) {
-                return convert.round(this.children[id].value());
+            this.getChild = function (id) {
+                return parent.round(this.children[id].value());
             };
 
             this.updateChild = function (id, value) {
                 this.children[id].value(value);
             };
 
-            this.getChildPure = function (id, convert) {
+            this.getChildPure = function (id) {
 
-                if (convert.system() === 'imperial') {
+                if (parent.system() === 'imperial') {
                     var mVal = this.children[id].value();
                     for (var convIndex in this.children[id].conversions) {
                         var conv = this.children[id].conversions[convIndex];
-                        mVal = convert.functions[conv.toMet](mVal);
+                        mVal = parent.functions[conv.toMet](mVal);
                     }
                     return mVal;
                 } else {
                     return this.children[id].value();
                 }
 
-                return convert.system() === 'metric' ? this.children[id].value() : convert.functions[this.children[id].conversions.toMet](this.children[id].value());
+                return parent.system() === 'metric' ? this.children[id].value() : parent.functions[this.children[id].conversions.toMet](this.children[id].value());
             }
 
-            this.convertChildren = function (parent) {
+            this.convertChildren = function () {
                 for (var childIndex in this.children) {
                     var child = this.children[childIndex];
                     for (var numIndex in child.conversions) {
@@ -305,7 +308,7 @@ function createConverter()
                 }
             };
 
-            this.convertChild = function (val, conversions, parent) {
+            this.convertChild = function (val, conversions) {
                 for (var numIndex in conversions) {
                     var conv = conversions[numIndex];
                     if (parent.system() === 'metric') {
@@ -324,7 +327,7 @@ function createConverter()
                 }
             };
 
-        };
+        }(this);
 
         this.rounding = ko.observable(3);
         this.system = ko.observable('metric');
@@ -338,6 +341,10 @@ function createConverter()
             this.system(this.system() === 'metric' ? 'imperial' : 'metric');
             this.registry.convertChildren(this);
         };
+
+        this.getSystem = function () {
+            return this.system() === 'metric' ? 'Metric' : 'Imperial';
+        }
 
         this.round = function (value) {
             return Math.round(value * Math.pow(10, this.rounding())) / Math.pow(10, this.rounding());
