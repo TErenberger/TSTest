@@ -92,7 +92,6 @@ function createConverter()
                 return incoming / 0.74569988186290862739936;
             };
 
-
             // Area
             this.inchesSqToMillimetersSq = function (incoming) {
                 // 25.4^2 (in^2 -> mm^2)
@@ -101,7 +100,6 @@ function createConverter()
             this.millimetersSqToInchesSq = function (incoming) {
                 return incoming / 645.16;
             };
-
 
             // Pressure
             this.psiToBar = function (incoming) {
@@ -158,7 +156,6 @@ function createConverter()
             this.toString = function () {
                 return 'hello!';
             };
-
 
             // SYSTEM INDEPENDENT CONVERTERS
             // incomingSystem = new system
@@ -224,8 +221,6 @@ function createConverter()
             return this;
         }(this);
 
-        
-
         this.helpers = new function (parent) {
             this.parent = parent;
             this.getRoundingComputed = function (vm) {
@@ -251,7 +246,6 @@ function createConverter()
                 }, el);
             }
 
-
             this.getPureValueComputed = function (el, id) {
                 if (id == undefined) id = 'id';
                 return ko.pureComputed(function () {
@@ -261,8 +255,6 @@ function createConverter()
 
             return this;
         }(this);
-
-        
 
         this.registry = new function (parent) {
             this.parent = parent;
@@ -362,7 +354,6 @@ function createConverter()
 
         return this;
     };
-
         
 	return new converter();
 }

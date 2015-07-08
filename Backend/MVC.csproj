@@ -295,6 +295,7 @@
     <TypeScriptCompile Include="Scripts\TS\app.ts" />
     <TypeScriptCompile Include="Scripts\TS\Index_App.ts" />
     <TypeScriptCompile Include="Scripts\TS\Structure.ts" />
+    <TypeScriptCompile Include="Scripts\typings\conversion\conversion-2.0.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\knockout\knockout.d.ts" />
   </ItemGroup>
   <ItemGroup>

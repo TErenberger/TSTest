@@ -57,7 +57,6 @@
 
         getClass() : string {
             return 'col-sm-' + this.column;
-
         }
 
     }
