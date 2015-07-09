@@ -41,6 +41,12 @@ function createConverter()
                 return incoming / 1.609344;
             };
             // Weight/Mass (on Earth)
+            this.gramsToPounds = function (incoming) {
+                return incoming * 0.0022046;
+            };
+            this.poundsToGrams = function (incoming) {
+                return incoming / 0.0022046;
+            };
             this.poundsToKilograms = function (incoming) {
                 // by definition
                 return incoming * 0.45359237;
