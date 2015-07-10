@@ -167,62 +167,62 @@ function createConverter()
             // incomingSystem = new system
 
             // Weight/Mass (on Earth)
-            this.massOnEarth = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.poundsToKilograms(incomingValue) : this.kilogramsToPounds(incomingValue);
+            this.massOnEarth = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.poundsToKilograms(incomingValue) : this.kilogramsToPounds(incomingValue);
             };
 
             // Force (on Earth)
-            this.forceOnEarth = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.poundForceToNewtons(incomingValue) : this.newtonsToPoundForce(incomingValue);
+            this.forceOnEarth = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.poundForceToNewtons(incomingValue) : this.newtonsToPoundForce(incomingValue);
             };
 
             // Volume
-            this.volumeLandGal = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.gallonsToLiters(incomingValue) : this.litersToGallons(incomingValue);
+            this.volumeLandGal = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.gallonsToLiters(incomingValue) : this.litersToGallons(incomingValue);
             };
-            this.volumeCubicMAndFt = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.cubicFeetToCubicMeters(incomingValue) : this.cubicMetersToCubicFeet(incomingValue);
+            this.volumeCubicMAndFt = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.cubicFeetToCubicMeters(incomingValue) : this.cubicMetersToCubicFeet(incomingValue);
             };
-            this.volumeCubicCmAndIn = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.cubicInchesToCubicCentimeters(incomingValue) : this.cubicCentimetersToCubicInches(incomingValue);
+            this.volumeCubicCmAndIn = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.cubicInchesToCubicCentimeters(incomingValue) : this.cubicCentimetersToCubicInches(incomingValue);
             };
 
             // Power
-            this.powerKwAndHp = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.horsepowerToKilowatts(incomingValue) : this.kilowattsToHorsepower(incomingValue);
+            this.powerKwAndHp = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.horsepowerToKilowatts(incomingValue) : this.kilowattsToHorsepower(incomingValue);
             };
 
             // Distance
-            this.distanceMmAndIn = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.inchesToMillimeters(incomingValue) : this.millimetersToInches(incomingValue);
+            this.distanceMmAndIn = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.inchesToMillimeters(incomingValue) : this.millimetersToInches(incomingValue);
             };
-            this.distanceCmAndIn = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.inchesToCentimeters(incomingValue) : this.centimetersToInches(incomingValue);
+            this.distanceCmAndIn = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.inchesToCentimeters(incomingValue) : this.centimetersToInches(incomingValue);
             };
-            this.distanceMAndIn = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.inchesToMeters(incomingValue) : this.metersToInches(incomingValue);
+            this.distanceMAndIn = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.inchesToMeters(incomingValue) : this.metersToInches(incomingValue);
             };
-            this.distanceMAndFt = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.feetToMeters(incomingValue) : this.metersToFeet(incomingValue);
+            this.distanceMAndFt = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.feetToMeters(incomingValue) : this.metersToFeet(incomingValue);
             };
-            this.distanceKmAndMi = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.milesToKilometers(incomingValue) : this.kilometersToMiles(incomingValue);
+            this.distanceKmAndMi = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.milesToKilometers(incomingValue) : this.kilometersToMiles(incomingValue);
             };
 
             // Area
-            this.areaMmAndIn = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.inchesSqToMillimetersSq(incomingValue) : this.millimetersSqToInchesSq(incomingValue);
+            this.areaMmAndIn = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.inchesSqToMillimetersSq(incomingValue) : this.millimetersSqToInchesSq(incomingValue);
             };
 
             // Pressure
-            this.pressureBarAndPsi = function (incomingSystem, incomingValue) {
-                return incomingSystem.toLowerCase() == 'metric' ? this.psiToBar(incomingValue) : this.barToPsi(incomingValue);
+            this.pressureBarAndPsi = function (incomingValue) {
+                return this.parent.system() == 'metric' ? this.psiToBar(incomingValue) : this.barToPsi(incomingValue);
             };
 
             // SUPER ADVANCED CONVERTERS
             // incoming system = new system
-            this.torqueNMAndInLbf = function (incomingSystem, incomingValue) {
-                return this.forceOnEarth(incomingSystem, this.distanceMAndIn(incomingSystem, incomingValue));
+            this.torqueNMAndInLbf = function (incomingValue) {
+                return this.forceOnEarth(this.distanceMAndIn(incomingValue));
             };
             return this;
         }(this);

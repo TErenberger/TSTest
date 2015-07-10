@@ -26,11 +26,12 @@ var vm = new ViewModel();
 var weightConv = [new Conversion('poundsToKilograms', 'kilogramsToPounds')];
 var lengthConv = [new Conversion('millimetersToInches', 'inchesToMillimeters')];
 var specConv = [new Conversion('millimetersToInches', 'inchesToMillimeters'), new Conversion('poundsToKilograms', 'kilogramsToPounds')];
+var force = [new Conversion('forceOnEarth', 'forceOnEarth')];
 
 vm.el = [];
 vm.el.push(new ElementInput('weight element 1', 'kg', 'lb', ko.observable(1), weightConv));
 vm.el.push(new ElementInput('length element', 'mm', 'in', ko.observable(1), lengthConv));
-vm.el.push(new ElementInput('weight element 2', 'kg', 'lb', ko.observable(2), weightConv));
+vm.el.push(new ElementInput('weight element 2', 'kg', 'lb', ko.observable(2), force));
 
 vm.comp = [];
 
